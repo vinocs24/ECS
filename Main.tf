@@ -133,7 +133,8 @@ resource "aws_network_acl" "ecs-vpc-network-acl" {
     tags = {
         Name = "ecs-vpc-network-acl"
     }
- 
+}
+
 #NAT
 resource "aws_eip" "ecs-eip" {
 vpc      = true
