@@ -229,6 +229,7 @@ resource "aws_ecr_repository" "myapp" {
 # cluster
 resource "aws_ecs_cluster" "test-cluster" {
   name = "test-cluster"
+  user_data = file("ecr.sh")
 }
 
 resource "aws_launch_configuration" "ecs-test-launchconfig" {
