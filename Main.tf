@@ -246,7 +246,7 @@ resource "aws_launch_configuration" "ecs-test-launchconfig" {
 
 resource "aws_autoscaling_group" "ecs-example-autoscaling" {
   name                 = "ecs-example-autoscaling"
-  vpc_zone_identifier  = [aws_subnet.main-public-1.id, aws_subnet.main-public-2.id]
+  vpc_zone_identifier  = [aws_subnet.ecs-public-1.id, aws_subnet.ecs-public-2.id]
   launch_configuration = aws_launch_configuration.ecs-test-launchconfig.name
   min_size             = 1
   max_size             = 1
