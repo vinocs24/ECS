@@ -45,7 +45,24 @@ variable "private2_subnet_cidr_block" {
   description = "Private Subnet"
   default     = "10.10.4.0/24"
 }
+
 variable "availability_zones" {
   description = "Availability Zones"
   default     = "us-east-1a,us-east-1b,us-east-1c,us-east-1d"
 }
+
+variable "autoscale_min" {
+    default = "1"
+    description = "Minimum autoscale (number of EC2)"
+}
+
+variable "autoscale_max" {
+    default = "10"
+    description = "Maximum autoscale (number of EC2)"
+}
+
+variable "autoscale_desired" {
+    default = "2"
+    description = "Desired autoscale (number of EC2)"
+}
+
