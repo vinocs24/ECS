@@ -275,7 +275,7 @@ resource "aws_ecs_task_definition" "myapp-task-definition" {
 
 resource "aws_elb" "myapp-elb" {
   name = "myapp-elb"
-  subnets         = [aws_subnet.ecs-private-1.id, aws_subnet.ecs-private-2.id]
+  subnets         = [aws_subnet.ecs-private-1.id]
   security_groups = [aws_security_group.myapp-elb-securitygroup.id]
 
   listener {
