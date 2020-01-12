@@ -248,8 +248,10 @@ resource "aws_autoscaling_group" "ecs-example-autoscaling" {
   name                 = "ecs-example-autoscaling"
   vpc_zone_identifier  = [aws_subnet.ecs-public-1.id, aws_subnet.ecs-public-2.id]
   launch_configuration = aws_launch_configuration.ecs-test-launchconfig.name
-  min_size             = 1
-  max_size             = 1
+  min_size = var.autoscale_min
+  max_size = var.autoscale_max
+  desired_capacity = var.autoscale_desired
+  health_check_type = "EC2"
   tag {
     key                 = "Name"
     value               = "ecs-ec2-container"
@@ -273,6 +275,8 @@ resource "aws_ecs_task_definition" "myapp-task-definition" {
 
 resource "aws_elb" "myapp-elb" {
   name = "myapp-elb"
+  subnets         = [aws_subnet.ecs-public-1.id, aws_subnet.ecs-public-2.id]
+  security_groups = [aws_security_group.myapp-elb-securitygroup.id]
 
   listener {
     instance_port     = 3000
@@ -284,19 +288,15 @@ resource "aws_elb" "myapp-elb" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    timeout             = 30
+    timeout             = 3
     target              = "HTTP:3000/"
-    interval            = 60
+    interval            = 5
   }
 
   cross_zone_load_balancing   = true
-  idle_timeout                = 400
+  /*idle_timeout                = 400
   connection_draining         = true
-  connection_draining_timeout = 400
-
-  subnets         = [aws_subnet.ecs-public-1.id, aws_subnet.ecs-public-2.id]
-  security_groups = [aws_security_group.myapp-elb-securitygroup.id]
-
+  connection_draining_timeout = 400*/
   tags = {
     Name = "myapp-elb"
   }
@@ -306,7 +306,7 @@ resource "aws_ecs_service" "myapp-service" {
   name            = "myapp"
   cluster         = aws_ecs_cluster.test-cluster.id
   task_definition = aws_ecs_task_definition.myapp-task-definition.arn
-  desired_count   = 1
+  desired_count   = 2
   iam_role        = aws_iam_role.ecs-service-role.arn
   depends_on      = [aws_iam_policy_attachment.ecs-service-attach1]
 
