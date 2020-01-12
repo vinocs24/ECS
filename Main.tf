@@ -246,7 +246,7 @@ resource "aws_launch_configuration" "ecs-test-launchconfig" {
 
 resource "aws_autoscaling_group" "ecs-example-autoscaling" {
   name                 = "ecs-example-autoscaling"
-  vpc_zone_identifier  = [aws_subnet.ecs-public-1.id, aws_subnet.ecs-public-2.id]
+  vpc_zone_identifier  = [aws_subnet.ecs-private-1.id, aws_subnet.ecs-private-2.id]
   launch_configuration = aws_launch_configuration.ecs-test-launchconfig.name
   min_size = var.autoscale_min
   max_size = var.autoscale_max
@@ -275,7 +275,7 @@ resource "aws_ecs_task_definition" "myapp-task-definition" {
 
 resource "aws_elb" "myapp-elb" {
   name = "myapp-elb"
-  subnets         = [aws_subnet.ecs-public-1.id, aws_subnet.ecs-public-2.id]
+  subnets         = [aws_subnet.ecs-private-1.id, aws_subnet.ecs-private-2.id]
   security_groups = [aws_security_group.myapp-elb-securitygroup.id]
 
   listener {
