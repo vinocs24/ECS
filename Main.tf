@@ -315,7 +315,7 @@ resource "aws_ecs_service" "myapp-service" {
     container_name = "myapp"
     container_port = 3000
   }
-  lifecycle {
+  /*lifecycle {
     ignore_changes = [task_definition]
-  }
+  }*/
 }
