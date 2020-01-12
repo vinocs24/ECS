@@ -220,6 +220,11 @@ resource "aws_security_group" "myapp-elb-securitygroup" {
 }
 
 
+# ECR  
+resource "aws_ecr_repository" "myapp" {
+  name = "myapp"
+}
+  
 # cluster
 resource "aws_ecs_cluster" "test-cluster" {
   name = "test-cluster"
@@ -241,7 +246,7 @@ resource "aws_launch_configuration" "ecs-test-launchconfig" {
 resource "aws_autoscaling_group" "ecs-example-autoscaling" {
   name                 = "ecs-example-autoscaling"
   vpc_zone_identifier  = [aws_subnet.main-public-1.id, aws_subnet.main-public-2.id]
-  launch_configuration = aws_launch_configuration.ecs-example-launchconfig.name
+  launch_configuration = aws_launch_configuration.ecs-test-launchconfig.name
   min_size             = 1
   max_size             = 1
   tag {
